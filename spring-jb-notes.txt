@@ -1,0 +1,538 @@
+==Spring Bean factory Pattern : 
+Basically, factory pattern is to create set of objects based on the input provided either configurations or other sources.
+So Spring bean factory does same.
+1 : Spring bean factory ,reads spring configurations and creates all the required beans from the xml.
+
+scenerio :
+ My Triangle class is singleton and its dependency reference vairable Point is prototpe and if u want to create object of point it is not possible .
+2 : Because Triangle is Singleton it gets loaded only once by container and rest all the time when u call it  give same reference ..
+3 : Point is dependency on Triangle its object also get created only once , even though it is prototype it will be initailized only once because parent will be intialized once and  not possible to create new object .
+
+To solve that problem,we should implement application-context aware to get context object every where.so whenever required we can get application-context.getBean(bean-id)
+
+BEAN-DEFENTAION INHERITANCE
+=====
+-1:In Inheritance whenever   we write same memeber  of parent class  in child class then we called it as  override.. but in spring collections we can merge values of parent class and child class using merge field . exampe screenshot
+
+BEAN-POST-PROCESSOR -15th
+
+1:BEAN-POST-PROCESSOR:It means it will execute after the init method of that bean class
+
+2:it is veryuseful during configurations code to be writing plse check output to understand how executeion order works.
+
+
+
+class 1 : Spring framework
+==========================
+DrawingImpl example with polymorphisim
+
+class Drawing{
+
+Shape shape;
+
+}
+==
+class 2 : set spring in eclipse
+
+class 3 : 
+==
+Spring container : means which contains many objects.and spring container is responsible for creation and managing and destruction(i,e whole lifecycle) of object
+
+Factory Pattern : Spring container  uses factory pattern for creating and managing objects
+object-> Bean factory ->reads config/annotations
+whenever we ask for object/bean,spring reads the config and create object and keep it in container for managing its lifecycle and provide us
+
+class 4 :writing code with bean factory
+====
+C_04_BeanFactoryExample.java
+
+class 5 :
+===
+C_05_ApplicationContextExample.java with setter injection
+
+class 6 :
+===
+C_06_ConstructorInjectionExample
+
+there are 2 ways for injecting values 
+1 : constructor injection
+2 : setter injection
+
+Constructor injection:
+====
+
+It is other way,to inject values.
+use <constructor-arg> is tag is used to set values for each argument.so number of parameters in constructor =number of tags to be used
+Based on number of tags set in xml,spring internally calls that constructor
+<constructor-arg value="concentric-circle"> :By default values will be string and spring cast it to particular datatype implicitly
+
+example : 
+
+Few scenerios :
+-------
+1 : when u have multiple constructors with  same number of parameters with different datatypes,then we need to say spring ,by using type tag in xml to call particular constructor 
+
+example :Spring 
+ <constructor-arg value="concentric-circle"> :By default values will be string and spring cast it particular datatype implicitly
+ 
+2 : When u have multiple parameters in contructor,values will be set in same order of xml .If we want to change order then we should use index tag
+========================
+
+
+class 7 : Injecting Objects
+==
+1:C_07_InjectingObjectExample.java
+
+class 8 : InnerBeans and alias
+=======
+1 : InnerBeans :  defining beans with bean is called inner bean
+ inner bea
+2 : alias : we can give different bean name to bean using separate tag alias  or by attribute  name within bean
+3 : name attribute within bean tag also act as alias.
+Best approach : use id ,becuse spring does validation internally to maintain unique beans id.but not for name attribute
+
+class 9 :Injecting collection list in Beans
+-----
+Example : C_09_InjectingCollectionsListExample
+
+class 10 : Autowiring
+---
+1 : Injecting dependency automatically by spring.Internally it search dependency and resolve it.
+2 : Autowiring can be performed by 3 ways :
+    a) byName 
+	b) byType : it will resolve dependency by matching type of bean in class
+	problem : If we have multiple fields of same type in class ,then it doesn't resolve beans and through  NoUniqueBeanDefinitionException
+	c) byConstructor : same as byType
+	
+3 : It is recommended,to explicitly define beans in property instead of using auto-wiring tag
+===
+class 11 : 
+------
+Bean Scopes
+====
+1 : SingleTon 
+2 : prototype
+
+By Default,Spring uses Singleton  bean scope.
+In SingleTon,bean will be created for each spring container.
+which is different from java singleton factory.In java singleton factory, object will be created per applications
+
+By default in Spring,All Beans will be created when application-context is initialized/created.
+when we perform context.getBean("car").spring gives us already created object during initialization.
+==========
+
+class 12 : ApplicationContextAware and BeaFactoryName
+----
+1 : https://java2blog.com/injecting-prototype-bean-singleton-bean-spring/
+
+scenerio :
+ My Triangle class is singleton and its dependency reference variable Point is prototype and if u want to create object of point it is not possible .
+2 : Because Triangle is Singleton it gets loaded only once by container and rest all the time when u call it  give same reference ..
+3 : Point is dependency on Triangle its object also get created only once , even though it is prototype it will be initailized only once because parent will be intialized once and  not possible to create new object .
+
+To solve that problem,we have 3 solutions
+---
+1 : ApplicationContextAware : this is used to get application-context object within different classes.
+2 : method-injection 
+3 : BeanObjectFactory
+
+1 : we should implement application-context aware to get context object every where.so whenever required we can get application-context.getBean(bean-id)
+
+
+class 13:Bean Definition Inheritance
+===
+This class teaches,how to achieve inheritance within beans defined in xml.
+To achieve this ,we need to use <parent> tag
+
+In case ,if parent object has collection and child object also has collections,then in child object we should use merge sub-tag to add beans to existing.instead of getting overriding
+
+merge tag : it is used to add  to existing property instead of overriding it.
+abstract=true,this tag is used if ur bean is need not to be created.and spring uses it as template.
+---------
+
+class 14 :BeanLifeCycle callback
+=====
+1 : If we want to initaliaze/destroy anything after bean construction/destruction in spring.then it can be achieved by 3 ways
+a) by implementing spring initializationBean and disposable interface
+b) or by specifying in xml using init and destroy tag
+c) using post-construct and pre-destroy annotations
+
+usecase:
+i)Global init-and-destroy-methods-in-spring :  if any initialization/destroy method to be called for all beans of springs then it should be called in xml for beans tag with attribute default initalization and destroy method
+
+ii)through annotaions,we should build custom annotaions
+
+
+https://roytuts.com/custom-init-and-destroy-methods-in-spring/
+https://www.geeksforgeeks.org/bean-life-cycle-in-java-spring/
+
+===
+
+class 15 : BeanPostProcessor : Need to enhance bit more
+=====
+BeanPostProcessor class has 2 methods to override before and after init method
+Drawback in above initializationBean and disposable interface is ,we need to override init and destroy method in all class
+But in BeanPostProcessor,we can write separate class and implement methods.so that it will execute for each bean creation
+BeanBefore initialization,we u nned to change any values
+a =b;i,e change b before initialization to a. and change values after initization;
+
+When BeanPostProcessor methods are called
+Typically spring’s DI container does following things to create a bean, you request for:
+
+Create the bean instance either by a constructor or by a factory method
+Set the values and bean references to the bean properties
+Call the setter methods defined in the all the aware interfaces
+Pass the bean instance to the postProcessBeforeInitialization() method of each bean post processor
+Call the initialization callback methods
+Pass the bean instance to the postProcessAfterInitialization() method of each bean post processor
+The bean is ready to be used
+
+
+
+class 16 :BeanFactoryPostProcessor and propertyPlaceHolderConfigurer
+====
+
+1 : BeanFactoryPostProcessor : is executed before initialization/creation of Beans.i,e before initalzationBean interface and BeanPostProcessor
+2 : PropertyPlaceHolderConfigurer : It will be executed before BeanFactoryPostProcessor.To replace all place-holders before creating beans.
+
+PropertyPlaceHolderConfigurer : Spring might have written this class to read all properties from the specified file location and search xml to replace those place-holders.
+
+
+Life Cycle :
+==
+1 : PropertyPlaceHolderConfigurer will be executed first
+2 : BeanFactoryPostProcessor ->before creating beans
+3 : Creates Beans by reading xml i,e Constructor or setter injection
+4 : BeanPostProcessor interface.i,e  beans postProcessBeforeInitialization
+5 : InitalizationBeans i,e init method
+6 : BeanPostProcessor postProcessAfterInitialization
+7 : closing /destroy methods
+
+class 17 : CodingAtInterface
+===
+
+Till now,whenever we did getbean,we directly type casted to class.
+But best praticse,is coding at interface
+so will implement university interface who will have college details and each college will have there own college details
+
+======
+
+class 18 : Spring Annotations Required
+===
+1 : @Required annotations,is required when class has dependency field and field is  mandatory 
+Whenever,we forget to inject dependency object/value in xml.then we might get null-pointer exception when that field is used.
+so ,Spring provides RequiredBeanPostProcessor class to perform null check for all beans with required annotations
+
+RequiredBeanPostProcessor,if class didn't set its memeber variable,so we have to use @required annotaions on setMethod of variable so
+if we miss to set value in xml,then it will throw exception before creating/instating object
+
+===
+class 19 : Annotations : Autowired and Qualifier
+
+1 : Autowired annotations,is used to specify dependency injection of member-variable in class
+suppose,if we don't inject dependency object for bean in xml.
+instead,if we provide autowired annotation on setter method,then spring internally search for the dependency in xml and inject it .
+
+When we specify autowire on setter method,it will search for dependent bean .Spring searches for dependency beans in following order:
+
+1 : byType (i,e className) : if it finds one bean with same type in xml then it will inject that bean.
+							In case,if it finds multiple beans of same type.Then spring will search it byName
+							
+2 : byName : whenever member-variable matches to bean name .then it will inject  byName.
+In case,if we have multiple beans of same type and we don't have  member-variable of same name.Then we can tell spring which bean to be injected by beanID using qualifier annotations  
+
+3 : Qualifier :  When we have multiple beans of same type and no beans defined in xml matches member-variable of class(so bytype and byName wont work),then we should specify Qualifier annotation
+
+In spring
+<!-- it will add all beanpostprocessor classes of spring -->
+<context:annotation-config></context:annotation-config>
+
+=====
+class 20 : JSR(java specification request) annotation...
+----
+
+@Resource : same as autowired and qualifier
+@Postconstruct : it is to call init methods of bean class.instead of implementing interface/specifying in xml we can use this annotaions
+@pre-destroy : same as destroy method
+
+====
+class 21: Component and sterotype annotaions : yet to implement and covered 8 mins video
+====
+
+@component : this is used to create object of the bean class.and all other dependency  should be injected through auto-wired
+This annotaion,will create object with bean-id as name of the bean class but  starting with small-case
+example : College bean class = college bean-id
+=====
+
+class 22 :MessageSource and ResourceBundle from spring for Internalizations
+===
+ote : It is advantage of ApplicationContext interface compared to beanfactory
+1 : this is used to read property files and return values configured.This is usually used in internalization
+MeesageSource internal class implement this 
+2 : this is usually used in bussiness logic like otp messages and others
+=========
+
+class 23 : EventHandling
+====
+1 :  EventHandling has 3 component i,e 
+a) Publisher to publish event
+b) Listener to listen event
+c) Event itself
+
+2 : Implement listener to listen events .i,e application-event from spring :
+a)Implement interface ApplicationListener to listen events
+By default,when we enable ApplicationListener ,it will listen for all events i,e context startup listener and context closed event and extra
+
+3 : Implement custom publisher to publish event
+
+a) Write own event that extends ApplicationEvent and write method to be called by listener
+b) In component class ,add dependency of application-publish event of spring and call publish event method by passing own event
+c) Autowire applicationPublish event by implementing application-event-publish-aware.publish-aware will provide applicationPublish event object ,thorugh which we can call custom publish events
+
+
+===========================================SPRING FRAMEWORK END==============================================
+
+Aspect oriented programmig : 
+-----
+Usecase :
+==
+suppose say,we have logger object in all class to just log the message.
+To solve,this one way is to create seperate logger class  and create one logger object and logmessage method
+so this logmessage mehtod to be called from all class
+But still problem using object-oriented .is code is re
+
+Problems for above usecase without apsect: 
+==
+1 : Too many relationship for cross-cutting object
+2 : code is still required in all methods to call logger class log-message method
+3 : cannot all be changed at once.if there is any change in log-message method then all method calls should be changed
+
+=====
+Cross cutting concerns :Few common things used across application are  
+====
+1 : Logging
+2 : Transactional
+3 : Security
+
+So above problems,can be solved by aspect oriented programming
+
+Aop are also class with some special privileges
+-----------
+1 : so we can create separate,aspect for each concern i,e LoggingAspect,SecurityAspect and so on
+2 : there will be  Aspect config,where we will specifiy for which class and methods those aops to be integrated
+3 : Any different methods/class needs logging then just we need to change aspect configurations
+
+Aspects are similar to servlet filters  i,e servlet fileters will be executed before servlet
+so similarly,aspet are executed before and after target methods
+
+Wrapping Aspects around methods-in-spring
+-----
+
+aspect before code
+|
+|
+target method
+|
+|
+aspect after code
+
+==========
+Steps in Aop
+===
+1 : Write aspects
+2 : Configure where aspects to be applied
+
+class 25 : adding dependency for aops
+===
+class 26 :  Writing Our First Aspect Part 1
+===
+
+class 27 :  Writing Our First Aspect Part 2 
+====
+1 :@Aspect : this annotation is used to tell class as aspect
+2 :@Before : this annotation will tell aspect advice(method in aspects) to executed before the given expression is called.we should specify execution method name before which this aspect advice to executed
+3 : Aspect Advice : terminology used for methods in aspect class
+4 : enable aspect-auto-proxy
+5 : @component to be added on logging aspect class
+
+class 28 :Point-cut and wild-card expressions completed tutorial for 14mins i,e till wild-card expression..
+==
+TODO : point cut to be started  and example for wildcards in eclipse
+===
+use-case 1 :  advice to applied for particular method of particular class
+expression :@Before(execution(public String com.learning.model.Circle.getName())) //applies advice  only for getMethod of circle class
+
+use-case 2 :  advice to be applied for all methods with wild-card
+expression : ue wildcards example @Before(execution(* *())) ==> for all non-parameters method
+
+Point-cut : this terminology is used for expressions used by advice(methods) i,e we can define point-cut once and make use in 
+aspect-advices.  point-cut will pitch in while executing flow.
+
+Example :LoggingAspect class
+
+===============
+
+class 29 : A few more PointCuts expression i,e execution,within,args()
+==
+1 : point-cut within() : within will take only className as parameter or wild-card that defines set of classes
+2: execution() : execution will take method name as parameter or wildcard that defines method names
+3 : args() :This will take expression as class names and it applies for methods that accepting those class name as parameter(nned to explore for example)
+
+Example of within : 
+=======
+1 : @Pointcut("within(learning.spring.springaop.model.Circle)")
+
+Look for LoggingAspect class
+============================End 29 class
+
+class 30: Jointcut and args  aspects : AspectJ(explore this as well,which is higher than spring)
+=====
+1 : Jointcut : this is used when u want to know which method is getting executed or whole targetObject itself
+
+Advantage : we can print messages dynamically,along with method names 
+==
+Note: All parameter in advices should match the name given for attribute
+example see returning name in after ad exception
+
+class 31 : 
+===
+Advice Types :
+1: @Before ,@After ,@AfterReturning,@AfterThrowing and so on
+
+@AfterReturning Advices wont be executed when there is an exceptions
+@AfterThrowing : in this advice we can  catch exception,i,e thrown 
+Aspects wont be executed when spring calls any methods internally.example setter injecting wont call aspect advice on setter method 
+
+class 32 : Around advice type : 
+=====
+@Around,is very powerful advice type which gives us power to control whether target method need to be executed or skipped
+looks like:(need to explore) ,we can use this to do mandatory parameter checks before executing any methods
+
+@Around :if this used on any methods that returning value.then it is compulsory for returning value see example for more details
+============
+
+class 33 : Naming Conventions and Custom Advice annotation
+===========
+1 : It is very important to maintain package name very neately.because this becomes handy while writing aspects
+usecase : :
+---- 
+if we want to log all before requst and after request for all controllers,then just we can write generic pointcut expression for packagename 
+so it advice gets called for each class and method that accepts with or without parameters
+
+example : below expression will be usefull for above  use-cases
+==
+@point-cut = executions(* org.spring.springframework.controllers.*.(..))
+
+
+usecase 2 : 
+----
+there will be some scenerio,where we might needed logging to very dynamically .i,e very particular methods and particular class.
+for such case,we should write custom advice annotaion.and use that annotaion where ever required i,e one method that need to be logged
+
+=============
+
+Class 34 :Spring Tutorial 34 - AOP XML configuration
+====
+1 : same thing which we have performed using annotation :yet to write simple example
+
+Advantages of learning aop xml
+==
+1 : if our enterprise using legacy code which implemented before annotations .
+2 : 
+
+=====
+
+class 35 : Aop Proxies : C_35_Aop_Appmain
+=====
+1 : understanding how to implement our own factory class to return bean object.
+2 : Understanding how to implement custom Proxy class  : ShapeServiceProxy
+3 : Understanding how to override methods in proxy class : ShapeServiceProxy getCircle
+4 : Understanding how aop advices are called on methods using proxy class : 
+
+Whenever,we call getBean method spring return proxy object.Proxy class overrides  methods if required(i,e example:logging advice and so on).
+
+================================
+
+class 36 :Introduction to DB and setting up 
+====
+setup Db and insert one record
+
+class 37 :	Using JDBC without Spring
+====
+Disadvantages of JDBC demo :
+====
+1 : Implement core JDBC code to fetch data from table.
+Setup jdbc demo to fetch from table  
+
+======
+
+class 38 :Adding Spring and DataSource Configuration
+======
+1 : Implement using spring DriverDatasourceManager
+
+class 39 : 
+=====
+
+JDBCTemplate : jdbc template is wrapper class by spring which avoids our boiler plate code
+
+same class as 38..included jdbc template there itself
+
+=======
+
+class 40 :Returning other datatypes from jdbcTemplate:
+===
+1 : jdbctemplate has multiple method to return particular datatypes
+2 : In jdbc template ,to replace ? in query u should pass object array args as showin example(reference class 38)
+3 : to cast resultset to custom class,u should use row-mapper concept.
+
+======
+class 41 : RowMapper Implementation
+=
+1 : when we want all columns from particular table,and cast to custom object then we should use rowmapper
+2 : rowmapper will map particular rowvalue to field
+3 : example from circle table to circle entity as shown in clss 38 : implement rowmapper and override maprow method
+usecase : 
+1 : to return single model object
+2 : to return list of model object 
+
+==========
+
+class 42 : Write operations using JDBCtemplate
+===
+1 : insert /update i,e DML
+2 : create/delete i,e DDL 
+
+can also be performed by JDBC template
+
+same Example : C38 class 
+===============
+
+class 43 : Named Parameters with JDBCTemplate
+====
+There are few disadvantages in JDBCTemplate,so will prefer named-parameter
+
+1 : whenever u want to add/delete some parameters to Object Array,it maintains insertion order...so changing/altering query should alter ur object []
+2 : so named JDBCTemplate,provides feature to map value with variable and prefer named parameter in queries as well
+
+3 : there is SimpleJDBCTemplate class,which will support common methods of NamedParameterJDBCTemplate and JDBCTemplate;//explore them
+-----------
+
+class 44 : DAO Support classes from Spring
+======
+
+usecase : Whenever we have multiple daoImpl classes,then in every class we should intialize or create jdbcTemplate objects using datasources as in JdbcDaoImplWithSpring.
+But this becomes cumbersome/ more boiler plate code when we have too many impl classes
+
+Solution 1 : For above use case,we can create separate class for all variables and move the setter injection to it.so every IMPL class will just extends that class to access variables like jdbc-template and many more fields.
+
+solution 2 : Spring itself is providing appropriate DAOSupport class ,which will init required datasources and template class
+example for JDBCTemplate it has JDBCTemplateDAOSupport
+
+Solution 2 : Example : c_44
+=========================
+
+
+class 45 :
+========
+
+
