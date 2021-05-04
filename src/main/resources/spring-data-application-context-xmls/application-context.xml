@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+  
+<!-- Setters injection based on name and value of property tag -->
+
+<bean id="datasource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<property name="url" value="jdbc:mysql://127.0.0.1:3306/test"></property>
+<property name="username" value="root"></property>
+<property name="password" value="password"></property>
+</bean>
+
+<!-- not working,but need to look into it
+use the example of DBCP connectionpooling for mysql connections
+
+<bean id="datasource" class="org.apache.commons.dbcp.BasicDataSource">
+<property name="url" value="jdbc:mysql://127.0.0.1:3306/test"></property>
+<property name="initialSize" value="2"></property>
+<property name="maxActive" value="5"></property>
+</bean>
+ -->
+
+
+
+ <bean id="jdbcDaoImplWithSpringDaoSupport" class="learning.spring.springdata.dao.JdbcDaoImplWithSpringDaoSupport">
+ <property name="dataSource" ref="datasource"></property>
+ </bean>
+
+<bean id="sessionFactory" class ="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+<property name = "dataSource" ref="datasource"></property>
+<property name="packagesToScan" value="learning.spring.springdata.model"></property>
+<property name="hibernateProperties">
+<props>
+<prop key="dialect">org.hibernate.dialect.MySQLDialect</prop>
+</props>
+
+</property>
+</bean>
+
+ <context:annotation-config></context:annotation-config>
+ <context:component-scan base-package="learning.spring.springdata"></context:component-scan>
+</beans>

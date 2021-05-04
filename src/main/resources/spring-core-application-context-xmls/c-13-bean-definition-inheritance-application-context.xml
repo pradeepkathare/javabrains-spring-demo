@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--Which beans u feel like common,define once and reuse many times using 
+		parent tag example like connection-factories -->
+
+	<bean id="parentCollege" class="learning.spring.springcore.beans.College">
+		<property name="collegeAddress" ref="collegeAddress" />
+	</bean>
+
+	<!-- all fields from parent college will be added to below bean,if it has 
+		same bean name ,then child bean will be considered -->
+	<bean id="childCollege" class="learning.spring.springcore.beans.College"
+		parent="parentCollege">
+		<property name="student" ref="student" />
+		<property name="studentAddress" ref="studentAddress"></property>
+	</bean>
+
+
+	<!-- Bean defination Example for list i,e collections -->
+
+
+	<bean id="parentcolleges" class="learning.spring.springcore.beans.Colleges">
+		<property name="students">
+			<list>
+				<ref bean="studentDetail1" />
+			</list>
+
+		</property>
+	</bean>
+
+	<bean id="childColleges" class="learning.spring.springcore.beans.Colleges"
+		parent="parentcolleges">
+		<property name="students">
+			<list merge="true">
+				<ref bean="studentDetail2" />
+			</list>
+
+		</property>
+		<property name="studentAddress" ref="studentAddress" />
+		<property name="collegeAddress" ref="collegeAddress" />
+	</bean>
+
+
+
+	<bean id="studentDetail1" class="learning.spring.springcore.beans.Student">
+		<property name="name" value="student1" />
+		<property name="rollNo" value="1" />
+	</bean>
+
+	<bean id="studentDetail2" class="learning.spring.springcore.beans.Student">
+		<property name="name" value="student2" />
+		<property name="rollNo" value="2" />
+	</bean>
+
+	<bean id="studentAddress" class="learning.spring.springcore.beans.Address">
+		<property name="area" value="studentAddress" />
+		<property name="pincode" value="583201" />
+	</bean>
+
+
+	<bean id="student" class="learning.spring.springcore.beans.Student">
+		<property name="name" value="student1" />
+		<property name="rollNo" value="1" />
+	</bean>
+	<bean id="collegeAddress" class="learning.spring.springcore.beans.Address">
+		<property name="area" value="CommonBean-collegeAdress" />
+		<property name="pincode" value="583201" />
+	</bean>
+
+</beans>

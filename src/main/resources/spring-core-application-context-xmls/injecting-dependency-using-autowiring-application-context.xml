@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--Injecting dependency in college using autowiring To make it work we 
+		should make sure beanId and College class fields name should match using 
+		byName -->
+
+
+	<bean id="college" class="learning.spring.springcore.beans.College"
+		autowire="constructor">
+	</bean>
+
+
+	<bean id="student" class="learning.spring.springcore.beans.Student" >
+		<property name="name" value="studentA" />
+		<property name="rollNo" value="1" />
+	</bean>
+	
+	<bean id="studentAddress" class="learning.spring.springcore.beans.Address">
+		<property name="area" value="studentAddress" />
+		<property name="pincode" value="583201" />
+	</bean>
+
+
+	<bean id="collegeAddress" class="learning.spring.springcore.beans.Address">
+		<property name="area" value="CommonBean-collegeAdress" />
+		<property name="pincode" value="583201" />
+	</bean>
+
+</beans>

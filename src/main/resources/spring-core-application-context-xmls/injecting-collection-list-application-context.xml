@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+  
+<!-- injecting object using Setters injection based on name and ref of property tag 
+we created 3 beans where name tag is field name and value is value for it.Id tag is reference
+
+college has list of students  ,student address and college address field
+so assigning studentDetial to student field of college and so on with reference tag
+-->
+
+
+ <bean id = "colleges" class ="learning.spring.springcore.beans.Colleges">
+ 	<property name="students" >
+ 	<list>
+ 		<ref bean= "studentDetail1"/>
+ 		<ref bean= "studentDetail2"/>
+ 	</list>
+ 	
+ 	</property>
+ 	<property name="studentAddress" ref="sAddress" />
+ 	<property name="collegeAddress" ref="cAddress"/>
+ </bean>
+ 
+ 
+ <!-- this specifes how to inject string values -->
+ <bean id="studentDetail1" class="learning.spring.springcore.beans.Student">
+ 	<property name="name" value="student1"/>
+ 	<property name="rollNo" value="1"/>
+ </bean>
+ 
+  <!-- this specifes how to inject string values -->
+ <bean id="studentDetail2" class="learning.spring.springcore.beans.Student">
+ 	<property name="name" value="student2"/>
+ 	<property name="rollNo" value="2"/>
+ </bean>
+ 
+  <bean id="sAddress" class="learning.spring.springcore.beans.Address">
+ 	<property name="area" value="studentAddress"/>
+ 	<property name="pincode" value="583201"/>
+ </bean>
+ 
+  <bean id="cAddress" class="learning.spring.springcore.beans.Address">
+ 	<property name="area" value="collegeAdress"/>
+ 	<property name="pincode" value="583201"/>
+ </bean>
+ 
+</beans>

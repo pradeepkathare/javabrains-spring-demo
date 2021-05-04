@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--usage of requiredAnnotation -->
+
+
+<!-- this bean will work as expected , student dependency is injected by auto-wiring annotation in bean class of college
+	<bean id="college" class="learning.spring.springcore.beans.CollegeComponentAnnotation">
+	<property name="studentAddress" ref="studentAddress"></property>
+	<property name="collegeAddress" ref="collegeAddress"></property>
+	</bean-->
+
+<!-- even though beanid is differnt,still it worked because of autowiring byType.i,e it had only one bean in xml of student type -->
+	<bean id="studentdetail" class="learning.spring.springcore.beans.Student" >
+		<property name="name" value="${student1.name}" />
+		<property name="rollNo" value="1" />
+	</bean>
+	
+	<bean id="studentAddress" class="learning.spring.springcore.beans.Address">
+		<property name="area" value="studentAddress" />
+		<property name="pincode" value="583201" />
+	</bean>
+
+
+	<bean id="collegeAddress" class="learning.spring.springcore.beans.Address">
+		<property name="area" value="CommonBean-collegeAdress" />
+		<property name="pincode" value="583201" />
+	</bean>
+
+<!-- This class used to override property place holders and it looks property file by default in classpath -->
+<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+<property name="locations" value="application.properties"></property>
+</bean>
+
+
+<!-- it will add all beanpostprocessor classes of spring -->
+<context:annotation-config></context:annotation-config>
+<context:component-scan base-package="learning.spring.springcore.beans"></context:component-scan>
+</beans>

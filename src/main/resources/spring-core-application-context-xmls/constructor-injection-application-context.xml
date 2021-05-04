@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+  
+<!-- here type tag is neccessary,for spring to identify between 2 single parameter constructor 
+spring default matches single paramter string constructor even if we are expecting int constructor
+-->
+ <bean id = "car_SingleParamterConstructorMatchesStringParamterByDefault" class ="learning.spring.springcore.Car">
+ 	<constructor-arg value="sweden"/>
+ </bean>
+ 
+  <bean id = "car_SingleParamterIntegerConstructor" class ="learning.spring.springcore.Car">
+ 	<constructor-arg type= "int" value="500000"/>
+ </bean>
+ 
+ <!--  expected output color as red and model as sweden but o/p:inappropriate
+  car of model=red and colour=sweden of colst=500000
+ -->
+ <bean id = "car_MultiParamterConstructorbyDefaultOrder" class ="learning.spring.springcore.Car">
+ 	<constructor-arg value="red"/>
+ 	<constructor-arg type= "int" value="500000"/>
+ 	<constructor-arg value="sweden"/>
+ </bean>
+ 
+  <bean id = "car_MultiParamterConstructorbyCustomOrder" class ="learning.spring.springcore.Car">
+ 	<constructor-arg index="1" value="red"/>
+ 	<constructor-arg index="2" value="500000"/>
+ 	<constructor-arg index="0" value="sweden"/>
+ </bean>
+</beans>

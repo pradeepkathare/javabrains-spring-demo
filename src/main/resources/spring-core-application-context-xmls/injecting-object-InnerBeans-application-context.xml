@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Injecting innerBean with bean Define separate bean for common bean 
+		object example : collegeAddress is common for all students so keep it as 
+		common bean student address and name should be inner bean as best praticse 
+		For innerBeans id tag is not mandatory inner beans should be defined within 
+		property tag -->
+
+
+	<bean id="college" class="learning.spring.springcore.College" name = "college-name-alias">
+
+		<property name="student">
+			<!-- this specifes how to inject string values and id not mandatory -->
+			<bean id="studentDetail" class="learning.spring.springcore.Student">
+				<property name="name" value="studentA" />
+				<property name="rollNo" value="1" />
+			</bean>
+		</property>
+
+		<property name="studentAddress">
+			<bean id="sAddress" class="learning.spring.springcore.Address">
+				<property name="area" value="studentAddress" />
+				<property name="pincode" value="583201" />
+			</bean>
+		</property>
+		
+		<property name="collegeAddress" ref="cAddress" />
+	</bean>
+
+
+
+	<bean id="cAddress" class="learning.spring.springcore.Address">
+		<property name="area" value="CommonBean-collegeAdress" />
+		<property name="pincode" value="583201" />
+	</bean>
+<!-- name is id of bean -->
+<alias name="college" alias="college-alias"/>
+</beans>
